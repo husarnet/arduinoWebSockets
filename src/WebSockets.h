@@ -25,6 +25,8 @@
 #ifndef WEBSOCKETS_H_
 #define WEBSOCKETS_H_
 
+#define WEBSOCKETS_NETWORK_TYPE NETWORK_HUSARNET
+
 #ifdef STM32_DEVICE
 #include <application.h>
 #define bit(b) (1UL << (b)) // Taken directly from Arduino.h
@@ -45,7 +47,7 @@
 #ifdef DEBUG_ESP_PORT
 #define DEBUG_WEBSOCKETS(...) DEBUG_ESP_PORT.printf( __VA_ARGS__ )
 #else
-//#define DEBUG_WEBSOCKETS(...) os_printf( __VA_ARGS__ )
+#define DEBUG_WEBSOCKETS(...) //Serial.printf( __VA_ARGS__ ) //os_printf( __VA_ARGS__ )
 #endif
 #endif
 
@@ -86,6 +88,7 @@
 #define NETWORK_W5100           (2)
 #define NETWORK_ENC28J60        (3)
 #define NETWORK_ESP32           (4)
+#define NETWORK_HUSARNET        (5)
 
 // max size of the WS Message Header
 #define WEBSOCKETS_MAX_HEADER_SIZE  (14)
@@ -168,6 +171,12 @@
 #include <WiFiClientSecure.h>
 #define WEBSOCKETS_NETWORK_CLASS WiFiClient
 #define WEBSOCKETS_NETWORK_SERVER_CLASS WiFiServer
+
+#elif (WEBSOCKETS_NETWORK_TYPE == NETWORK_HUSARNET)
+
+#include <Husarnet.h>
+#define WEBSOCKETS_NETWORK_CLASS HusarnetClient
+#define WEBSOCKETS_NETWORK_SERVER_CLASS HusarnetServer
 
 #else
 #error "no network type selected!"

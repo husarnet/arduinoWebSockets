@@ -115,7 +115,7 @@ void WebSocketsServer::close(void) {
 
 #if (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP8266)
     _server->close();
-#elif (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP32) || (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP8266_ASYNC)
+#elif (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP32) || (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP8266_ASYNC) || (WEBSOCKETS_NETWORK_TYPE == NETWORK_HUSARNET)
     _server->end();
 #else
     // TODO how to close server?
@@ -622,12 +622,12 @@ bool WebSocketsServer::clientIsConnected(WSclient_t * client) {
  */
 void WebSocketsServer::handleNewClients(void) {
 
-#if (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP8266) || (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP32)
+#if (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP8266) || (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP32) || (WEBSOCKETS_NETWORK_TYPE == NETWORK_HUSARNET)
     while(_server->hasClient()) {
 #endif
         bool ok = false;
 
-#if (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP8266) || (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP32)
+#if (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP8266) || (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP32) || (WEBSOCKETS_NETWORK_TYPE == NETWORK_HUSARNET)
         // store new connection
         WEBSOCKETS_NETWORK_CLASS * tcpClient = new WEBSOCKETS_NETWORK_CLASS(_server->available());
 #else
@@ -652,7 +652,7 @@ void WebSocketsServer::handleNewClients(void) {
             tcpClient->stop();
         }
 
-#if (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP8266) || (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP32)
+#if (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP8266) || (WEBSOCKETS_NETWORK_TYPE == NETWORK_ESP32) || (WEBSOCKETS_NETWORK_TYPE == NETWORK_HUSARNET)
         delay(0);
     }
 #endif
